@@ -9,7 +9,7 @@
 import UIKit
 import AVFoundation
 
-class RecordSoundsViewController: UIViewController, AVAudioRecorderDelegate {
+class RecordSoundsViewController: UIViewController {
     
     var audioRecorder: AVAudioRecorder!
 
@@ -59,19 +59,6 @@ class RecordSoundsViewController: UIViewController, AVAudioRecorderDelegate {
         
     }
     
-    func audioRecorderDidFinishRecording(_ recorder: AVAudioRecorder, successfully flag: Bool) {
-        if flag{
-            performSegue(withIdentifier: "stopRecording", sender: audioRecorder.url)
-        }else{
-            let alertMessage = UIAlertController(title: "Error", message: "Recording was not successful", preferredStyle: .alert)
-            let OKAction = UIAlertAction(title: "OK", style: .default)
-            alertMessage.addAction(OKAction)
-            self.present(alertMessage, animated: true, completion:nil)
-            
-        }
-        
-    }
-    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "stopRecording"{
             let playSoundsVC = segue.destination as? PlaySoundsViewController
@@ -80,5 +67,20 @@ class RecordSoundsViewController: UIViewController, AVAudioRecorderDelegate {
     }
     }
 
+}
+
+extension RecordSoundsViewController: AVAudioRecorderDelegate {
+    
+    func audioRecorderDidFinishRecording(_ recorder: AVAudioRecorder, successfully flag: Bool) {
+        if flag{
+            performSegue(withIdentifier: "stopRecording", sender: audioRecorder.url)
+        }else{
+            let alertMessage = UIAlertController(title: "Error", message: "Recording was not successful", preferredStyle: .alert)
+            let OKAction = UIAlertAction(title: "OK", style: .default)
+            alertMessage.addAction(OKAction)
+            present(alertMessage, animated: true, completion:nil)
+            
+        }
+    }
 }
 
